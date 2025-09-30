@@ -1,13 +1,20 @@
 package router
 
-import "github.com/gin-gonic/gin"
+import (
+	"cenox/handlers"
+	"net/http"
 
-func Routing() {
-	router := gin.Default()
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	router.Run()
+	"github.com/gorilla/mux"
+)
+
+func NewRouter() *mux.Router {
+	router := mux.NewRouter().StrictSlash(true)
+
+	router.HandleFunc("/users", handlers.CreateUserHandler).Methods(http.MethodPost)
+	router.HandleFunc("/users", handlers.GetUsersHandler).Methods(http.MethodGet)
+	router.HandleFunc("/users/{id}", handlers.GetUserHandler).Methods(http.MethodGet)
+	router.HandleFunc("/users/{id}", handlers.UpdateUserHandler).Methods(http.MethodPut)
+	router.HandleFunc("/users/{id}", handlers.DeleteUserHandler).Methods(http.MethodDelete)
+
+	return router
 }

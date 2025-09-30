@@ -1,7 +1,13 @@
 package main
 
-import "cenox/router"
+import (
+	"cenox/router"
+	"log"
+	"net/http"
+)
 
 func main() {
-	router.Routing()
+	r := router.NewRouter()
+	log.Println("Server starting on port 8080...")
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
